@@ -1,0 +1,50 @@
+﻿<Window x:Class="JiraStoryPrint.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:w="clr-namespace:JiraStoryPrint"
+        Title="JIRA Story Print" Height="270" Width="420" Icon="/JiraStoryPrint;component/Images/MainIcon.ico">
+  <Window.Resources>
+    <w:BoolToColorConverter x:Key="boolToColorConverter" />
+  </Window.Resources>
+  <Window.Background>
+    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+      <GradientStop Color="#FFCDD5E5" Offset="1" />
+      <GradientStop Color="White" Offset="0" />
+    </LinearGradientBrush>
+  </Window.Background>
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition />
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <Border Grid.Column="0" BorderThickness="3" Margin="10,10,5,10" CornerRadius="10" BorderBrush="{Binding FileIsOpened, Converter={StaticResource ResourceKey=boolToColorConverter}}" AllowDrop="True" Drop="inputBorderDrop">
+      <Border.Background>
+        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+          <GradientStop Color="#FFE6E6E6" Offset="1" />
+          <GradientStop Color="White" Offset="0" />
+        </LinearGradientBrush>
+      </Border.Background>
+      <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center">
+        Put HTML-file with JIRA stories here
+      </TextBlock>
+    </Border>
+    <Border Grid.Column="1" BorderThickness="3" Margin="5,10,10,10" CornerRadius="10" BorderBrush="{Binding FileIsProcessed, Converter={StaticResource ResourceKey=boolToColorConverter}}" AllowDrop="True" MouseMove="outputBorderMouseMove">
+      <Border.Background>
+        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+          <GradientStop Color="#FFE6E6E6" Offset="1" />
+          <GradientStop Color="White" Offset="0" />
+        </LinearGradientBrush>
+      </Border.Background>
+      <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center">
+        Take updated HTML file from here
+      </TextBlock>
+    </Border>
+    <TextBlock Grid.ColumnSpan="2" Grid.Row="1" Margin="0,0,10,10" VerticalAlignment="Bottom" HorizontalAlignment="Right" >
+      <Hyperlink NavigateUri="https://github.com/kirmir" RequestNavigate="aboutHyperlinkRequestNavigate">
+        <TextBlock>https://github.com/kirmir</TextBlock>
+      </Hyperlink>
+    </TextBlock>
+  </Grid>
+</Window>
