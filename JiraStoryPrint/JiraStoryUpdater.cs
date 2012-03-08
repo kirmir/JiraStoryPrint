@@ -64,7 +64,7 @@ namespace JiraStoryPrint
             foreach (var story in stories)
             {
                 story.Attributes.Add("style", string.Format("font-size:{0}pt;", StoryTextFontSize));
-                var storyBody = story.SelectSingleNode("tbody");
+                var storyBody = story.SelectSingleNode("tbody") ?? story;
 
                 // Story header.
                 var header = storyBody.SelectSingleNode("tr");
@@ -78,7 +78,8 @@ namespace JiraStoryPrint
                 storyBody.AppendChild(header);
 
                 // Story details.
-                var details1 = story.SelectSingleNode("following-sibling::table[1]/tbody");
+                var details1 = story.SelectSingleNode("following-sibling::table[1]/tbody") ??
+                               story.SelectSingleNode("following-sibling::table[1]");
                 var reporter = details1.SelectSingleNode("tr[contains(., 'Reporter')]");
                 var estimate = details1.SelectSingleNode("tr[contains(., 'Original Estimate')]");
                 
@@ -95,7 +96,8 @@ namespace JiraStoryPrint
                     storyBody.AppendChild(estimate);
                 }
 
-                var details2 = story.SelectSingleNode("following-sibling::table[2]/tbody");
+                var details2 = story.SelectSingleNode("following-sibling::table[2]/tbody") ??
+                               story.SelectSingleNode("following-sibling::table[2]");
                 var themes = details2.SelectSingleNode("tr[contains(., 'Theme/s')]");
                 var acceptanceCriteria = details2.SelectSingleNode("tr[contains(., 'Acceptance Criteria')]");
                 
@@ -113,24 +115,28 @@ namespace JiraStoryPrint
                 }
 
                 // Set previous element to find optional description and comments tables.
-                var previousElement = details2.ParentNode;
+                var previousElement = details2.Name == "table" ? details2 : details2.ParentNode;
 
                 // Description.
-                var descriptionHeader = previousElement.SelectSingleNode("following-sibling::table[1]/tbody/tr/td");
+                var descriptionHeader = previousElement.SelectSingleNode("following-sibling::table[1]/tbody/tr/td") ??
+                                        previousElement.SelectSingleNode("following-sibling::table[1]/tr/td");
                 if (descriptionHeader != null && descriptionHeader.InnerText.Trim() == "&nbsp;Description&nbsp;")
                 {
                     previousElement = previousElement.SelectSingleNode("following-sibling::table[2]");
-                    var description = previousElement.SelectSingleNode("tbody/tr/td");
+                    var description = previousElement.SelectSingleNode("tbody/tr/td") ??
+                                      previousElement.SelectSingleNode("tr/td");
                     description.Attributes.Remove("id");
                     description.Attributes.Add("colspan", "4");
                     storyBody.AppendChild(description.ParentNode);
                 }
 
                 // Comments.
-                var commentsHeader = previousElement.SelectSingleNode("following-sibling::table[1]/tbody/tr/td");
+                var commentsHeader = previousElement.SelectSingleNode("following-sibling::table[1]/tbody/tr/td") ??
+                                     previousElement.SelectSingleNode("following-sibling::table[1]/tr/td");
                 if (commentsHeader != null && commentsHeader.InnerText.Trim() == "&nbsp;Comments&nbsp;")
                 {
-                    var comments = previousElement.SelectNodes("following-sibling::table[2]/tbody/tr");
+                    var comments = previousElement.SelectNodes("following-sibling::table[2]/tbody/tr") ??
+                                   previousElement.SelectNodes("following-sibling::table[2]/tr");
                     foreach (var comment in comments)
                     {
                         if (comment.Attributes["id"].Value.StartsWith("comment-header"))
