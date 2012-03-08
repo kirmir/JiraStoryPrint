@@ -42,8 +42,8 @@
       </TextBlock>
     </Border>
     <TextBlock Grid.ColumnSpan="2" Grid.Row="1" Margin="0,0,10,10" VerticalAlignment="Bottom" HorizontalAlignment="Right" >
-      <Hyperlink NavigateUri="https://github.com/kirmir" RequestNavigate="aboutHyperlinkRequestNavigate">
-        <TextBlock>https://github.com/kirmir</TextBlock>
+      <Hyperlink NavigateUri="https://github.com/kirmir/JiraStoryPrint" RequestNavigate="aboutHyperlinkRequestNavigate">
+        <TextBlock>https://github.com/kirmir/JiraStoryPrint</TextBlock>
       </Hyperlink>
     </TextBlock>
   </Grid>
