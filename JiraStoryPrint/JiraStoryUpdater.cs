@@ -7,6 +7,7 @@ namespace JiraStoryPrint
     {
         private const int StoryHeaderFontSize = 14;
         private const int StoryTextFontSize = 12;
+        private const int CommentsTextFontSize = 10;
 
         /// <summary>
         /// Gets the HTML document.
@@ -145,6 +146,7 @@ namespace JiraStoryPrint
                         }
 
                         comment.SelectSingleNode("td").Attributes.Add("colspan", "4");
+                        comment.Attributes.Add("style", string.Format("font-size:{0}pt;", CommentsTextFontSize));
                     }
 
                     storyBody.AppendChildren(comments);
